@@ -291,8 +291,10 @@ class _ProductScreenState extends State<ProductScreen> {
                 alignment: Alignment.bottomRight,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, CartScreen.routeName,
-                        arguments: args);
+                    viewModel.addProductToCart(args);
+                    Future.delayed(const Duration(seconds: 1)).then((value) =>
+                        Navigator.pushNamed(context, CartScreen.routeName,
+                            arguments: args));
                   },
                   child: Container(
                     width: width * 0.53,

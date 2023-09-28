@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task/data/data_model/product_data_model.dart';
 
+import '../ui/cart/cart_screen.dart';
 import '../utilities/app_colors.dart';
 
 class CustomExploreItem extends StatelessWidget {
@@ -109,6 +110,8 @@ class CustomExploreItem extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () async {
                       await onCartTab(productDataModel);
+                      Future.delayed(const Duration(seconds: 1)).then((value) =>
+                          Navigator.pushNamed(context, CartScreen.routeName));
                     },
                     child: const CircleAvatar(
                         backgroundColor: AppColors.buttonColor,

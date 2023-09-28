@@ -42,8 +42,7 @@ class _CartScreenState extends State<CartScreen> {
       buildWhen: (previous, current) {
         return true;
       },
-      listener: (context, state) {
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -359,7 +358,8 @@ class _CartScreenState extends State<CartScreen> {
                             padding:
                                 EdgeInsets.symmetric(horizontal: width * 0.07),
                             child: Text(
-                              r"$""${(selectedItems + shippingFee).toStringAsFixed(2)}",
+                              r"$"
+                              "${(selectedItems + shippingFee).toStringAsFixed(2)}",
                               style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
