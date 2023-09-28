@@ -1,10 +1,26 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task/data/firebase_manager.dart';
 
-class CartScreen extends StatelessWidget {
-  static const String routeName = "cart_screen";
+class ProductViewModel extends Cubit<ProductViewState> {
+  ProductViewModel() : super(InitialState());
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
+  Future<void> changeFavorite(String id, bool stateOfSelected) async {
+    emit(LoadingState());
+    try {
+      await FirebaseManager.addProductToFavorait(id, stateOfSelected);
+      emit(ChangeFavoriteSuccessState());
+    } catch (ex) {
+      emit(FailState());
+    }
   }
 }
+
+abstract class ProductViewState {}
+
+class InitialState extends ProductViewState {}
+
+class LoadingState extends ProductViewState {}
+
+class ChangeFavoriteSuccessState extends ProductViewState {}
+
+class FailState extends ProductViewState {}

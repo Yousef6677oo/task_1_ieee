@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:task/data/data_model/product_data_model.dart';
 
 import '../utilities/app_colors.dart';
 
 class CustomExploreItem extends StatelessWidget {
-  String imagePath;
-  bool isFavorait = true;
+  ProductDM productDataModel;
+  Function onHeartTab;
+  Function onCartTab;
 
-  CustomExploreItem({required this.imagePath});
+  CustomExploreItem(
+      {required this.productDataModel,
+      required this.onHeartTab,
+      required this.onCartTab});
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +43,8 @@ class CustomExploreItem extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.asset(
-                          imagePath,
+                        child: Image.network(
+                          productDataModel.imagePath ?? '',
                           fit: BoxFit.cover,
                         )),
                   ),
@@ -47,22 +52,29 @@ class CustomExploreItem extends StatelessWidget {
                 Positioned(
                     top: height * 0.012,
                     left: width * 0.37,
-                    child: CircleAvatar(
-                        backgroundColor:
-                            isFavorait ? Colors.white : Colors.transparent,
-                        radius: 15,
-                        child: Image.asset(
-                          "assets/heart_icon.png",
-                          width: 15,
-                          color: const Color(0xfffb5b58),
-                        )))
+                    child: GestureDetector(
+                      onTap: () async {
+                        await onHeartTab(
+                            productDataModel.id, productDataModel.isFavorite);
+                      },
+                      child: CircleAvatar(
+                          backgroundColor: productDataModel.isFavorite!
+                              ? Colors.white
+                              : Colors.transparent,
+                          radius: 15,
+                          child: Image.asset(
+                            "assets/heart_icon.png",
+                            width: 15,
+                            color: const Color(0xfffb5b58),
+                          )),
+                    ))
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 12.0, top: 15.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 12.0, top: 15.0),
               child: Text(
-                "Item Name",
-                style: TextStyle(
+                productDataModel.productName ?? '',
+                style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: AppColors.darkFontColor),
@@ -81,26 +93,31 @@ class CustomExploreItem extends StatelessWidget {
             SizedBox(
               height: height * 0.016,
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 12.0),
+                  padding: const EdgeInsets.only(left: 12.0),
                   child: Text(
-                    r"$250.00",
-                    style:
-                        TextStyle(fontSize: 15, color: AppColors.darkFontColor),
+                    r"$" "${productDataModel.price}.00",
+                    style: const TextStyle(
+                        fontSize: 15, color: AppColors.darkFontColor),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: 12),
-                  child: CircleAvatar(
-                      backgroundColor: AppColors.buttonColor,
-                      radius: 15,
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                      )),
+                  padding: const EdgeInsets.only(right: 12),
+                  child: GestureDetector(
+                    onTap: () async {
+                      await onCartTab(productDataModel);
+                    },
+                    child: const CircleAvatar(
+                        backgroundColor: AppColors.buttonColor,
+                        radius: 15,
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        )),
+                  ),
                 ),
               ],
             ),
